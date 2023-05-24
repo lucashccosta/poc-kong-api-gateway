@@ -72,7 +72,7 @@ docker-compose up -d
 ```
 
 ## Exemplo de configurações de serviços e rotas no Kong
-```curl
+```json
 # Configuração do serviço de apostas no Kong
 {
     "next": null,
@@ -148,7 +148,7 @@ docker-compose up -d
 }
 ```
 
-```json
+```curl
 # Chamada à rota de criação de aposta configurada no Kong (observar o header Host)
 
 curl --location --request POST 'http://localhost:8000/api/bets' \
