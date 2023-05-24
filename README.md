@@ -72,7 +72,7 @@ docker-compose up -d
 ```
 
 ## Exemplo de configurações de serviços e rotas no Kong
-```json
+```curl
 # Configuração do serviço de apostas no Kong
 {
     "next": null,
