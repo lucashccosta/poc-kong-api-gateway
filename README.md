@@ -70,3 +70,95 @@ Na pasta raiz do projeto voce pode executar
 ```shell
 docker-compose up -d
 ```
+
+## Exemplo de configurações de serviços e rotas no Kong
+```json
+# Configuração do serviço de apostas no Kong
+{
+    "next": null,
+    "data": [
+        {
+            "path": null,
+            "protocol": "http",
+            "retries": 5,
+            "id": "76461bc4-41c0-4688-bfec-d29ad70a49fe",
+            "name": "bets-api",
+            "write_timeout": 2000,
+            "tags": [
+                "bets"
+            ],
+            "ca_certificates": null,
+            "created_at": 1684702368,
+            "updated_at": 1684962759,
+            "tls_verify_depth": null,
+            "connect_timeout": 2000,
+            "read_timeout": 2000,
+            "client_certificate": null,
+            "host": "bets-api", # srv encontrado no docker-compose
+            "enabled": true,
+            "tls_verify": null,
+            "port": 9999 # port encontrado no docker-compose
+        }
+    ]
+}
+```
+
+```json
+# Configuração da rota de criar apostas no Kong 
+{
+    "next": null,
+    "data": [
+        {
+            "service": {
+                "id": "76461bc4-41c0-4688-bfec-d29ad70a49fe"
+            },
+            "protocols": [
+                "http",
+                "https"
+            ],
+            "id": "18ff749e-6f6c-48a7-b81c-1d9d7f35206d",
+            "paths": [
+                "/api/bets"
+            ],
+            "request_buffering": true,
+            "response_buffering": true,
+            "destinations": null,
+            "tags": [
+                "bets"
+            ],
+            "https_redirect_status_code": 426,
+            "regex_priority": 0,
+            "created_at": 1684702771,
+            "updated_at": 1684963029,
+            "hosts": [
+                "bets.app" # enviado no header da requisição para roteamento
+            ],
+            "path_handling": "v1",
+            "preserve_host": false,
+            "sources": null,
+            "snis": null,
+            "name": "bets-create",
+            "headers": null,
+            "strip_path": false,
+            "methods": [
+                "POST"
+            ]
+        }
+    ]
+}
+```
+
+```json
+# Chamada à rota de criação de aposta configurada no Kong (observar o header Host)
+
+curl --location --request POST 'http://localhost:8000/api/bets' \
+--header 'Host: bets.app' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "match": "1X-DC",
+    "email": "john@doe.com",
+    "homeTeamScore": "2",
+    "awayTeamScore": "3",
+    "championship": "Uefa Champions League"
+}'
+```
