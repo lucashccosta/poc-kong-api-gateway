@@ -54,6 +54,12 @@ bem como, visualização de métricas, controle de usuários, etc.
 
 ![](./.github/assets/konga_services.png)
 
+Para acessar serviço do Konga disponibilizado no `docker-compose.yml`, digite no navegador, após rodar a aplicação:
+
+```sh
+http://localhost:1337
+```
+
 ## Tecnologias utilizadas
 
 * Docker
